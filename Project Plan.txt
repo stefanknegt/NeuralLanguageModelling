@@ -1,0 +1,10 @@
+Milestone (23-nov)
+-KenLM model af
+-Bengio model af
+-Plan betreffende RAN networks
+
+Mogelijke plannen voor RAN network:
+1) visualisatie: a) average distance of most important words, b) type of words which are important for predictions and c) when/what do we froget or memorize.
+2) improvements to RAN: a) RAN + other model in parallel or b) re-use word embedding matrix (weight tying - press&wolf, 2016) to connect RAN layer to output softmax.
+
+
