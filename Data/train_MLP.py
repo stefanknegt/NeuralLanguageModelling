@@ -1,79 +1,85 @@
 import numpy as np
-import generate_test_vectors as gen_vec
+import random
+import read_data as data_import
 from collections import Counter
 from collections import defaultdict
 import torch
 import torch.nn as nn
 import torchvision.datasets as dsets
 import torchvision.transforms as transforms
-<<<<<<< HEAD
 import torch.nn.functional as F
 from torch import autograd
-=======
->>>>>>> master
 from torch.autograd import Variable
 
-outname = "necessary-vectors.txt"
-w2v,w2i,i2w,word_list = gen_vec.create_dictionaries(outname)
+corpus = "train.txt"
+vector_file = "glove.6B.50d.txt"
+word_list,w2i,i2w, w2v = data_import.read_and_create_dictionaries(corpus,vector_file)
 
-N = 4
+if len(w2i) != len(i2w):
+    raise NotImplementedError ('Length of w2i and i2w are not the same!!!')
+
+N = 3
 dim = 50
-input_size = (N-1) * dim
+input_size = (N - 1) * dim
 hidden_size = dim * 10
-num_classes = len(i2w)
-num_epochs = 5
+num_classes = len(w2i)
+print ('There are',num_classes,'classes')
+print ('There are',len(w2v),'vectors')
+print ('The wordlist contains',len(word_list),'words')
+num_epochs = 10
 learning_rate = 0.001
 
-class Net(nn.Module):
-    def __init__(self,input_size,hidden_size, num_classes):
-        super(Net, self).__init__()
-        self.l1 = nn.Linear(input_size,hidden_size)
-        self.l2 = nn.Linear(hidden_size,num_classes)
+ngram = data_import.generate_context(N, word_list) # Create ngrams
+print ('Created ngrams!')
 
-    def forward(self,x):
+class Net(nn.Module):
+    def __init__(self, input_size, hidden_size, num_classes):
+        super(Net, self).__init__()
+        self.l1 = nn.Linear(input_size, hidden_size)
+        self.l2 = nn.Linear(hidden_size, num_classes)
+
+    def forward(self, x):
         x = self.l1(x)
         x = F.tanh(x)
         x = self.l2(x)
         x = F.softmax(x)
         return x
 
-mlp = Net(input_size,hidden_size,num_classes)
 
-criterion = nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(mlp.parameters(), lr=learning_rate)
+mlp = Net(input_size, hidden_size, num_classes)
 
+criterion = nn.NLLLoss()
+optimizer = torch.optim.SGD(mlp.parameters(), lr=learning_rate)
 
-print ('word_list length is',len(word_list))
-print ('len of w2i is',len(w2i))
+for epoch in range(num_epochs):
+    random.shuffle(ngram)
+    total_loss = torch.Tensor([0])
+    for context, target in ngram:
+        # Define input vector
+        input_vector = None
+        for word in context:
+            try:
+                input_vector = np.r_[input_vector, w2v[word]]
+            except:
+                input_vector = w2v[word]
 
-for i in range(N-1,len(word_list)):
+        if len(input_vector) != (N - 1) * dim:
+            # Check if input_vector if of the correct dimension
+            print ('Context is',context)
+            raise NotImplementedError('Length is not 100, there is probably an unknown word')
 
-    # Define input vector x
-    x = None
+        np.reshape(input_vector, (len(input_vector), 1))
+        input_vector = autograd.Variable(torch.FloatTensor(input_vector))
+        # Done defining input vector
 
+        mlp.zero_grad()
+        optimizer.zero_grad()
+        output = mlp(input_vector).unsqueeze(0)
 
-    for j in range(0,N-1):
-        try:
-            x = np.r_[x,w2v[word_list[j]]]
-        except:
-            x = w2v[word_list[j-N+1]]
+        # Calculate the loss
+        loss = criterion(output, autograd.Variable(torch.LongTensor([w2i[target]-1])))
+        loss.backward()
+        optimizer.step()
 
-    # Done with defining  x
-
-    np.reshape(x,(len(x),1))
-    x = Variable(torch.FloatTensor(x))
-    optimizer.zero_grad()
-    outputs = mlp(x)
-
-    index = w2i[word_list[i]]
-    one_hot_target = torch.zeros(num_classes,1)
-
-    #print ('index is',index)
-    one_hot_target[index] = 1
-    #print (one_hot_target)
-
-    # loss = criterion(outputs,target)
-    #loss.backward()
-    #optimizer.step()
-
-
+        total_loss += loss.data
+    print('After epoch',epoch,'the total loss is',total_loss)
