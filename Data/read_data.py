@@ -30,7 +30,7 @@ def read_and_create_dictionaries(fname, vector_file, max_lines=np.inf):
     data = []
     i2w = dict()
     w2i = defaultdict(lambda : len(w2i))
-    count_word = 0
+    #w2i = dict()
 
     with open(fname, "r") as fh:
         for k, line in enumerate(fh):
