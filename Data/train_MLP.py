@@ -11,7 +11,7 @@ import torch.nn.functional as F
 from torch import autograd
 from torch.autograd import Variable
 
-corpus = "train.txt"
+corpus = "train-test.txt"
 vector_file = "glove.6B.50d.txt"
 word_list,w2i,i2w = data_import.read_text(corpus)
 
@@ -25,7 +25,7 @@ hidden_size = dim * 10
 num_classes = len(w2i)
 print ('There are',num_classes,'classes')
 #print ('The wordlist contains',len(word_list),'words')
-num_epochs = 10
+num_epochs = 3
 learning_rate = 0.001
 
 ngram = data_import.generate_context(N, word_list) # Create ngrams
@@ -85,3 +85,4 @@ for epoch in range(num_epochs):
         if iter_count % 100 == 0:
             print ('in epoch',epoch,'it is now at iter',100*iter_count/len(ngram),'%')
     print('After epoch',epoch,'the total loss is',total_loss)
+
