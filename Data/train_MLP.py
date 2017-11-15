@@ -23,7 +23,7 @@ dim = 50
 input_size = (N - 1) * dim
 hidden_size = dim * 10
 num_classes = len(w2i)
-#print ('There are',num_classes,'classes')
+print ('There are',num_classes,'classes')
 #print ('The wordlist contains',len(word_list),'words')
 num_epochs = 10
 learning_rate = 0.001
@@ -49,10 +49,13 @@ class Net(nn.Module):
 mlp = Net(dim, input_size, hidden_size, num_classes)
 criterion = nn.NLLLoss()
 optimizer = torch.optim.SGD(mlp.parameters(), lr=learning_rate)
+
 for epoch in range(num_epochs):
+
     random.shuffle(ngram)
     total_loss = torch.Tensor([0])
     for context, target in ngram:
+
         # Define input vector
         input_vector = [w2i[w] for w in context]
         input_vector = autograd.Variable(torch.LongTensor(input_vector))
@@ -66,8 +69,8 @@ for epoch in range(num_epochs):
         mlp.zero_grad()
         optimizer.zero_grad()
         output = mlp(input_vector)
-        print (input_vector)
-        # Calculate the loss
+
+        # Calculate the loss and update the weights
         loss = criterion(output, autograd.Variable(torch.LongTensor([w2i[target]])))
         loss.backward()
         optimizer.step()

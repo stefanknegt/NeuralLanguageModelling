@@ -75,8 +75,8 @@ for epoch in range(10):
 
         # Step 4. Compute your loss function. (Again, Torch wants the target
         # word wrapped in a variable)
-        print ('target index is',autograd.Variable(torch.LongTensor([word_to_ix[target]])))
-        print ('output is',log_probs)
+        #print ('target index is',autograd.Variable(torch.LongTensor([word_to_ix[target]])))
+        #print ('output is',log_probs)
 
         loss = loss_function(log_probs, autograd.Variable(
             torch.LongTensor([word_to_ix[target]])))

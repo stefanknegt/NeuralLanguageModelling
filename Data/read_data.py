@@ -8,7 +8,7 @@ def read_text(fname, max_lines=np.inf):
     """
     data = []
     i2w = dict()
-    w2i = defaultdict(lambda : len(w2i))
+    w2i = dict()
 
     with open(fname, "r") as fh:
         for k, line in enumerate(fh):
@@ -18,7 +18,12 @@ def read_text(fname, max_lines=np.inf):
 
             for word in words:
                 data.append(word.lower())
-                i2w[w2i[word]] = word
+
+    vocab = set(data)
+
+    for i, word in enumerate(vocab):
+        w2i[word] = i
+        i2w[i] = word
 
     return data, w2i, i2w
 
