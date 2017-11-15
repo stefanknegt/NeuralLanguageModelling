@@ -50,10 +50,14 @@ mlp = Net(dim, input_size, hidden_size, num_classes)
 criterion = nn.NLLLoss()
 optimizer = torch.optim.SGD(mlp.parameters(), lr=learning_rate)
 
+print ('There are',len(ngram),'ngrams to train')
+
 for epoch in range(num_epochs):
 
     random.shuffle(ngram)
     total_loss = torch.Tensor([0])
+
+    iter_count = 0
     for context, target in ngram:
 
         # Define input vector
@@ -76,4 +80,8 @@ for epoch in range(num_epochs):
         optimizer.step()
 
         total_loss += loss.data
+        iter_count += 1
+
+        if iter_count % 100 == 0:
+            print ('in epoch',epoch,'it is now at iter',100*iter_count/len(ngram),'%')
     print('After epoch',epoch,'the total loss is',total_loss)
