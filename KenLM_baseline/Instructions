@@ -1,0 +1,4 @@
+Use the following in the command line:
+#cat train.txt| python ../KenLM/process.py | ../../../../../kenlm/bin/lmplz -o 3 > train3.arpa
+
+Then analyze the arpa files using perplexity.py
