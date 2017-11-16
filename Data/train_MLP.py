@@ -22,7 +22,7 @@ hidden_size = dim * 10
 num_classes = len(w2i)
 print ('There are',num_classes,'classes')
 #print ('The wordlist contains',len(word_list),'words')
-num_epochs = 20
+num_epochs = 200
 learning_rate = 0.001
 
 if len(w2i) != len(i2w):
@@ -42,9 +42,9 @@ class Net(nn.Module):
 
     def forward(self, x):
         embeds = self.embeddings(x).view((1,-1))
-        out = F.tanh(self.l1(embeds)+self.bias1)
+        out = F.relu(self.l1(embeds)+self.bias1)
         out = self.l2(out)+self.bias2
-        out = F.softmax(out)
+        out = F.log_softmax(out)
         return out
 
 mlp = Net(dim, input_size, hidden_size, num_classes)
@@ -60,7 +60,6 @@ for epoch in range(num_epochs):
 
     iter_count = 0
     for context, target in ngram:
-
 
         # Define input vector
         input_vector = [w2i[w] for w in context]
@@ -86,7 +85,7 @@ for epoch in range(num_epochs):
 
         #if iter_count % 100 == 0:
             #print ('in epoch',epoch,'it is now at iter',100*iter_count/len(ngram),'%')
-    print('After epoch',epoch,'the total loss is',np.exp(total_loss))
+    print('After epoch',epoch,'the total loss is',total_loss)
 
 # HOW TO PRINT FROM EMBEDDINGS, IF THIS IS NECESSARY
 #ins = Variable(torch.LongTensor([1]))
@@ -96,17 +95,19 @@ start_sentence = [i2w[w2i['<s>']] for i in range(N-1)]
 
 def next_word(sentence):
     context = sentence[len(sentence)-N+1:]
-    print ('Context is',context)
     input_vector = [w2i[w] for w in context]
     input_vector = autograd.Variable(torch.LongTensor(input_vector))
 
     output = mlp(input_vector)
-
+    print (output)
     values,index = torch.max(output,1) # returns maximum value and index of max
-
+    print (index.data[0])
+    print ('')
     new_word = i2w[index.data[0]]
     sentence.append(new_word)
     return sentence
+
+print (i2w)
 
 for i in range(10):
     if i == 0:

@@ -22,8 +22,7 @@ def read_text(fname, N, max_lines=np.inf):
             for word in words:
                 data.append(word.lower())
 
-            for sentence_ending in range(N-1):
-                data.append('</s>')
+            #data.append('</s>')
 
     vocab = set(data)
 
