@@ -22,7 +22,7 @@ hidden_size = dim * 10
 num_classes = len(w2i)
 print ('There are',num_classes,'classes')
 #print ('The wordlist contains',len(word_list),'words')
-num_epochs = 200
+num_epochs = 100
 learning_rate = 0.001
 
 if len(w2i) != len(i2w):
@@ -36,22 +36,20 @@ class Net(nn.Module):
         super(Net, self).__init__()
         self.embeddings = nn.Embedding(num_classes,dim)
         self.l1 = nn.Linear(input_size, hidden_size)
-        self.bias1 = nn.Parameter(torch.ones(1))
+        self.bias1 = nn.Parameter(torch.zeros(1))
         self.l2 = nn.Linear(hidden_size, num_classes)
-        self.bias2 = nn.Parameter(torch.ones(1))
+        self.bias2 = nn.Parameter(torch.zeros(1))
 
     def forward(self, x):
         embeds = self.embeddings(x).view((1,-1))
-        out = F.relu(self.l1(embeds)+self.bias1)
-        out = self.l2(out)+self.bias2
+        out = F.relu(self.l1(embeds))
+        out = self.l2(out)
         out = F.log_softmax(out)
         return out
 
 mlp = Net(dim, input_size, hidden_size, num_classes)
 criterion = nn.NLLLoss()
 optimizer = torch.optim.SGD(mlp.parameters(), lr=learning_rate)
-print(ngram)
-print ('There are',len(ngram),'ngrams to train')
 
 for epoch in range(num_epochs):
 
@@ -72,7 +70,7 @@ for epoch in range(num_epochs):
         # Done defining input vector
 
         mlp.zero_grad()
-        optimizer.zero_grad()
+        #optimizer.zero_grad()
         output = mlp(input_vector)
 
         # Calculate the loss and update the weights
@@ -99,20 +97,14 @@ def next_word(sentence):
     input_vector = autograd.Variable(torch.LongTensor(input_vector))
 
     output = mlp(input_vector)
-    print (output)
     values,index = torch.max(output,1) # returns maximum value and index of max
-    print (index.data[0])
-    print ('')
     new_word = i2w[index.data[0]]
     sentence.append(new_word)
     return sentence
 
-print (i2w)
+sentence = next_word(start_sentence)
 
-for i in range(10):
-    if i == 0:
-        sentence = next_word(start_sentence)
-    else:
-        sentence = next_word(sentence)
+while sentence[-1] != '</s>':
+    sentence = next_word(sentence)
 
 print (sentence)
