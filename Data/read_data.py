@@ -1,7 +1,7 @@
 import numpy as np
 from collections import defaultdict
 
-def read_text(fname, max_lines=np.inf):
+def read_text(fname, N, max_lines=np.inf):
     """
     Reads in the data in fname and returns it as
     one long list of words.
@@ -16,8 +16,14 @@ def read_text(fname, max_lines=np.inf):
                 break
             words = line.strip().split()
 
+            for sentence_start in range(N-1):
+                data.append('<s>')
+
             for word in words:
                 data.append(word.lower())
+
+            for sentence_ending in range(N-1):
+                data.append('</s>')
 
     vocab = set(data)
 

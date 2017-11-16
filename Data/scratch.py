@@ -87,4 +87,4 @@ for epoch in range(10):
 
         total_loss += loss.data
     losses.append(total_loss)
-#print(losses)  # The loss decreased every iteration over the training data!
+print(losses)  # The loss decreased every iteration over the training data!
