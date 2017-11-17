@@ -35,6 +35,18 @@ def read_text(fname, N, max_lines=np.inf):
 
     return data, w2i, i2w
 
+def get_sentence_list(data):
+
+    sentence_list = []
+    temp_sentence = []
+    for i in data:
+        temp_sentence.append(i)
+        if i == '</s>':
+            sentence_list.append(temp_sentence)
+            temp_sentence = []
+
+    return sentence_list
+
 def read_and_create_dictionaries(fname, vector_file, max_lines=np.inf):
     """
     Reads in the data in fname and returns it as

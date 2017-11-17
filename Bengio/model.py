@@ -1,8 +1,10 @@
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch import autograd
 import random
+import read_data as data_import
 
 class Net(nn.Module):
     def __init__(self, dim, input_size,hidden_size, num_classes):
@@ -68,3 +70,23 @@ def next_word(N,sentence,w2i,i2w,mlp):
     new_word = i2w[index.data[0]]
     sentence.append(new_word)
     return sentence
+
+def calculate_perplexity(N,word_list,w2i,trained_model):
+    print ("Starting to calculate the perplexity now!")
+    sentence_list = data_import.get_sentence_list(word_list)
+
+    test_set_prob = 0
+    for sentence in sentence_list:
+        for word in range(2, len(sentence)):
+            context = [sentence[word - (N - 1) + i] for i in range(0, N - 1)]
+            input_vector = [w2i[w] for w in context]
+            input_vector = autograd.Variable(torch.LongTensor(input_vector))
+            output = trained_model(input_vector)
+
+            required_index = w2i[sentence[word]]
+            test_set_prob += output[0][required_index].data[0]
+
+    number_of_words = len(word_list) - (len(sentence_list) * (N - 1))
+
+    perplexity = (np.exp(test_set_prob)) ** (-1 / number_of_words)
+    return perplexity,number_of_words
