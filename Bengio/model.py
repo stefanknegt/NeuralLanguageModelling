@@ -84,9 +84,9 @@ def calculate_perplexity(N,word_list,w2i,trained_model):
             output = trained_model(input_vector)
 
             required_index = w2i[sentence[word]]
+
             test_set_prob += output[0][required_index].data[0]
 
     number_of_words = len(word_list) - (len(sentence_list) * (N - 1))
-
     perplexity = (np.exp(test_set_prob)) ** (-1 / number_of_words)
     return perplexity,number_of_words
