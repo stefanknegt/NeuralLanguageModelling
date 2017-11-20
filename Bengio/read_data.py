@@ -101,8 +101,12 @@ def generate_context(N, word_list):
         quadgram = [([word_list[i], word_list[i + 1], word_list[i + 2]], word_list[i + 3]) for i in
                     range(len(word_list) - 3)]
         return quadgram
+    elif N == 5:
+        fivegram = [([word_list[i], word_list[i + 1], word_list[i + 2], word_list[i + 3]], word_list[i+4]) for i in
+                    range(len(word_list) - 4)]
+        return fivegram
     else:
-        raise NotImplementedError('N should be 2, 3 or 4')
+        raise NotImplementedError('N should be 2, 3, 4 or 5')
 
 '''
 corpus = "train-test.txt"
