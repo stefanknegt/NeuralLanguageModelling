@@ -4,17 +4,18 @@ import model
 import torch
 from torch import autograd
 
+train_file = "train.txt"
+valid_file = "valid.txt"
+test_file = "test.txt"
 
-corpus = "train-test.txt"
-
-N = 3
-word_list,w2i,i2w = data_import.read_text(corpus, N)
+N = 5
+word_list,w2i,i2w = data_import.read_text(train_file, N)
 dim = 50
 input_size = (N - 1) * dim
 hidden_size = dim * 10
 num_classes = len(w2i)
 print ('There are',num_classes,'classes')
-num_epochs = 300
+num_epochs = 100
 
 ngram = data_import.generate_context(N, word_list) # Create ngrams
 print ('Created ngrams!')
@@ -31,6 +32,15 @@ trained_model = model.train(N,num_epochs,ngram,w2i,mlp)
 #
 #print (sentence)
 
-perplexity,_ = model.calculate_perplexity(N,word_list,w2i,trained_model)
+perplexity_train,_ = model.calculate_perplexity(N,word_list,w2i,trained_model)
+print ("The perplexity of the training set is",perplexity_train)
 
-print ("The perplexity of the test set is",perplexity)
+word_list_valid,_,_ = data_import.read_text(valid_file,N)
+word_list_test,_,_ = data_import.read_text(test_file,N)
+
+perplexity_valid,_ = model.calculate_perplexity(N,word_list_valid,w2i,trained_model)
+print ("The perplexity of the validation set is",perplexity_valid)
+
+perplexity_test,_ = model.calculate_perplexity(N,word_list_test,w2i,trained_model)
+print ("The perplexity of the test set is",perplexity_test)
+
