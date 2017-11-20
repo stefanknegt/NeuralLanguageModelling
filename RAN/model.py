@@ -48,8 +48,9 @@ class RNNModel(nn.Module):
         init.xavier_uniform(self.decoder.weight)
 
     def forward(self, input, hidden):
+        #print("Basis functie")
         emb = self.drop(self.encoder(input))
-        output, hidden = self.rnn(emb, hidden)
+        output, hidden = self.rnn.forward(emb, hidden)
         output = self.drop(output)
         decoded = self.decoder(output.view(output.size(0)*output.size(1), output.size(2)))
         return decoded.view(output.size(0), output.size(1), decoded.size(1)), hidden

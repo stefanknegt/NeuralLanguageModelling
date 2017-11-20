@@ -2,9 +2,9 @@ import kenlm
 import numpy as np
 import math
 
-m = kenlm.Model("train4.arpa")
+m = kenlm.Model("3-gram.arpa")
 
-per_file = "../penn/train.txt"
+per_file = "../penn/test.txt"
 data = []
 for line in open(per_file, 'r'):
     for word in line.split():

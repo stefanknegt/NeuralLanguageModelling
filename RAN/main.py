@@ -75,8 +75,8 @@ def batchify(data, bsz):
 
 
 eval_batch_size = 10
-train_data = batchify(corpus.train, args.batch_size)
-val_data = batchify(corpus.valid, eval_batch_size)
+train_data = batchify(corpus.test, args.batch_size)
+val_data = batchify(corpus.test, eval_batch_size)
 test_data = batchify(corpus.test, eval_batch_size)
 
 ###############################################################################
