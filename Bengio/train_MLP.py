@@ -25,8 +25,6 @@ print ('There are',num_classes,'classes')
 num_epochs = 100
 learning_rate = 0.001
 
-if len(w2i) != len(i2w):
-    raise NotImplementedError ('Length of w2i and i2w are not the same!!!')
 
 ngram = data_import.generate_context(N, word_list) # Create ngrams
 print ('Created ngrams!')

@@ -30,7 +30,22 @@ def read_text(fname, N, max_lines=np.inf):
         w2i[word] = i
         i2w[i] = word
 
+    if len(w2i) != len(i2w):
+        raise NotImplementedError('Length of w2i and i2w are not the same!!!')
+
     return data, w2i, i2w
+
+def get_sentence_list(data):
+
+    sentence_list = []
+    temp_sentence = []
+    for i in data:
+        temp_sentence.append(i)
+        if i == '</s>':
+            sentence_list.append(temp_sentence)
+            temp_sentence = []
+
+    return sentence_list
 
 def read_and_create_dictionaries(fname, vector_file, max_lines=np.inf):
     """
@@ -69,6 +84,9 @@ def read_and_create_dictionaries(fname, vector_file, max_lines=np.inf):
             w2v[words[0]] = np.asarray(empty_vector)
 
     w2v['<unk>'] = np.random.rand(50,) # Add <unk> as a random vector
+
+    if len(w2i) != len(i2w):
+        raise NotImplementedError('Length of w2i and i2w are not the same!!!')
 
     return data,w2i,i2w, w2v
 
