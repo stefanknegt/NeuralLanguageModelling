@@ -9,8 +9,10 @@ import argparse
 
 import torch
 from torch.autograd import Variable
-
+import settings
+settings.init()
 import data
+import numpy as np
 
 parser = argparse.ArgumentParser(description='PyTorch PTB Language Model')
 
@@ -67,8 +69,28 @@ with open(args.outf, 'w') as outf:
         word_idx = torch.multinomial(word_weights, 1)[0]
         input.data.fill_(word_idx)
         word = corpus.dictionary.idx2word[word_idx]
-
         outf.write(word + ('\n' if i % 20 == 19 else ' '))
-
+        #if word == '<eos>':
+            #break
+        if i == 20:
+            break
         if i % args.log_interval == 0:
             print('| Generated {}/{} words'.format(i, args.words))
+
+
+assert(len(settings.iList) == len(settings.fList))
+word_list = np.zeros((len(settings.iList),len(settings.iList)))
+num_words = len(settings.iList)
+for word in range(0,num_words):
+    for depth in range(0,num_words):
+        if (word>depth):
+            forget = settings.fList[depth+1]
+            for k in range(depth+2,word+1):
+                #print(depth,word)
+                forget = forget*settings.fList[k]
+            answer = (torch.mm(settings.iList[depth],forget.transpose(0,1)))
+            answer = answer.data.numpy()
+            word_list[depth][word] = answer
+
+
+print(word_list)
