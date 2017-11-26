@@ -92,5 +92,4 @@ for word in range(0,num_words):
             answer = answer.data.numpy()
             word_list[depth][word] = answer
 
-
 print(word_list)
