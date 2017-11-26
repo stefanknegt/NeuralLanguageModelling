@@ -19,7 +19,7 @@ class Net(nn.Module):
         embeds = self.embeddings(x).view((1,-1))
         out = F.relu(self.l1(embeds))
         out = self.l2(out)
-        out = F.log_softmax(out)
+        out = F.softmax(out)
         return out
 
 def train(N,num_epochs,ngram,w2i,mlp):
@@ -77,15 +77,19 @@ def calculate_perplexity(N,word_list,w2i,trained_model):
 
     test_set_prob = 0
     for sentence in sentence_list:
+        sentence_prob = 0
         for word in range(2, len(sentence)):
             context = [sentence[word - (N - 1) + i] for i in range(0, N - 1)]
             input_vector = [w2i[w] for w in context]
             input_vector = autograd.Variable(torch.LongTensor(input_vector))
             output = trained_model(input_vector)
 
-            required_index = w2i[sentence[word]]
 
-            test_set_prob += np.log2(np.exp(output[0][required_index].data[0]))
+
+            required_index = w2i[sentence[word]]
+            sentence_prob += np.log(output[0][required_index].data[0])
+
+        test_set_prob += np.log2(np.exp(sentence_prob))
 
             # print ('Test set prob is ',test_set_prob)
     number_of_words = len(word_list) - (len(sentence_list) * (N - 1))
