@@ -1,6 +1,6 @@
 import numpy as np
 import read_data as data_import
-import model
+import model_batch as model
 import torch
 from torch import autograd
 import time
@@ -12,19 +12,20 @@ train_file = "train.txt"
 start_time = time.time()
 N = 4
 BPTT = 15
+batch_size = 10
 word_list,w2i,i2w = data_import.read_text(train_file,N,BPTT)
 dim = 50
 input_size = (N - 1) * dim
 hidden_size = dim * 10
 num_classes = len(w2i)
 print ('There are',num_classes,'classes')
-num_epochs = 50
+num_epochs = 20
 
 ngram = data_import.generate_context(N, word_list) # Create ngrams
-print ('Created ngrams!')
+print ('Created ngrams!',len(ngram))
 
 mlp = model.Net(dim, input_size, hidden_size, num_classes)
-trained_model = model.train(N,num_epochs,ngram,w2i,mlp)
+trained_model = model.train(N,num_epochs,ngram,w2i,mlp,batch_size)
 
 #start_sentence = [i2w[w2i['<s>']] for i in range(N-1)]
 #
@@ -46,4 +47,3 @@ print ('It took',time.time()-start_time,'seconds')
 #
 # perplexity_test,_ = model.calculate_perplexity(N,word_list_test,w2i,trained_model)
 # print ("The perplexity of the test set is",perplexity_test)
-
