@@ -30,23 +30,29 @@ def train(N,num_epochs,ngram,w2i,mlp,batch_size):
     input_matrix = np.zeros((len(ngram),N-1))
     target_matrix = np.zeros(len(ngram))
     counter = 0
+
     for context, target in ngram:
         input_matrix[counter,:] = np.asarray([w2i[w] for w in context]).reshape(1,len(context))
         target_matrix[counter] = np.asarray(w2i[target])
+
         if counter % 100000 == 0:
             print('Saved ',counter,' ngrams to the matrix')
         counter += 1
+
     print("Wooo finished")
     for epoch in range(num_epochs):
         random.shuffle(ngram)
         total_loss = torch.Tensor([0])
+
         for b in range(0,input_matrix.shape[0], batch_size):
             input_batch = input_matrix[b:b+batch_size,:]
             target_batch = target_matrix[b:b+batch_size]
-            print(input_batch, target_batch)
-            input_batch = autograd.Variable(torch.LongTensor(torch.from_numpy(input_batch))).type(torch.LongTensor)
-            target_batch = autograd.Variable(torch.LongTensor(torch.from_numpy(target_batch))).type(torch.LongTensor)
+            #print(input_batch, target_batch)
 
+            input_batch = autograd.Variable(torch.from_numpy(input_batch).long())
+            target_batch = autograd.Variable(torch.from_numpy(target_batch).long())
+
+            print (input_batch)
             mlp.zero_grad()
             output = mlp(input_batch)
             loss = criterion(output, target_batch)

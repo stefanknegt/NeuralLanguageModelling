@@ -5,7 +5,7 @@ import torch
 from torch import autograd
 import time
 
-train_file = "train.txt"
+train_file = "train-test.txt"
 #valid_file = "valid.txt"
 #test_file = "test.txt"
 
@@ -22,7 +22,7 @@ print ('There are',num_classes,'classes')
 num_epochs = 20
 
 ngram = data_import.generate_context(N, word_list) # Create ngrams
-print ('Created ngrams!',len(ngram))
+print ('Created ngrams! There are',len(ngram))
 
 mlp = model.Net(dim, input_size, hidden_size, num_classes)
 trained_model = model.train(N,num_epochs,ngram,w2i,mlp,batch_size)
