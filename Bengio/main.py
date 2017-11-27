@@ -15,7 +15,7 @@ input_size = (N - 1) * dim
 hidden_size = dim * 10
 num_classes = len(w2i)
 print ('There are',num_classes,'classes')
-num_epochs = 50
+num_epochs = 5
 
 ngram = data_import.generate_context(N, word_list) # Create ngrams
 print ('Created ngrams!')

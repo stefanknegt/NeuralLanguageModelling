@@ -56,7 +56,7 @@ def train(N,num_epochs,ngram,w2i,mlp):
             iter_count += 1
 
             if iter_count % 100 == 0:
-                print ('in epoch',epoch,'it is now at iter',100*iter_count/len(ngram),'%')
+                print ('in epoch',epoch,'it is now at iter',100.0*iter_count/len(ngram),'%')
         print('After epoch', epoch, 'the total loss is', total_loss)
     return mlp
 
