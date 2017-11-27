@@ -3,11 +3,13 @@ import read_data as data_import
 import model
 import torch
 from torch import autograd
+import time
 
 train_file = "train-test.txt"
 #valid_file = "valid.txt"
 #test_file = "test.txt"
 
+start_time = time.time()
 N = 4
 BPTT = 15
 word_list,w2i,i2w = data_import.read_text(train_file,N,BPTT)
@@ -35,7 +37,7 @@ trained_model = model.train(N,num_epochs,ngram,w2i,mlp)
 
 perplexity_train,_ = model.calculate_perplexity(N,word_list,w2i,trained_model)
 print ("The perplexity of the training set is",perplexity_train)
-
+print ('It took',time.time()-start_time,'seconds')
 # word_list_valid,_,_ = data_import.read_text(valid_file,N)
 # word_list_test,_,_ = data_import.read_text(test_file,N)
 #
