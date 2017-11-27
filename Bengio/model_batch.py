@@ -5,6 +5,7 @@ import torch.nn.functional as F
 from torch import autograd
 import random
 import read_data as data_import
+from torch.utils.data import TensorDataset, DataLoader
 
 class Net(nn.Module):
     def __init__(self, dim, input_size,hidden_size, num_classes):
@@ -40,6 +41,7 @@ def train(N,num_epochs,ngram,w2i,mlp,batch_size):
         counter += 1
 
     print("Wooo finished")
+    #torch_dataset = TensorDataset()
     for epoch in range(num_epochs):
         random.shuffle(ngram)
         total_loss = torch.Tensor([0])
