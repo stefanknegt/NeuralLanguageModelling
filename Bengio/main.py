@@ -8,14 +8,15 @@ train_file = "train-test.txt"
 #valid_file = "valid.txt"
 #test_file = "test.txt"
 
-N = 5
-word_list,w2i,i2w = data_import.read_text(train_file, N)
+N = 4
+BPTT = 15
+word_list,w2i,i2w = data_import.read_text(train_file,N,BPTT)
 dim = 50
 input_size = (N - 1) * dim
 hidden_size = dim * 10
 num_classes = len(w2i)
 print ('There are',num_classes,'classes')
-num_epochs = 5
+num_epochs = 50
 
 ngram = data_import.generate_context(N, word_list) # Create ngrams
 print ('Created ngrams!')

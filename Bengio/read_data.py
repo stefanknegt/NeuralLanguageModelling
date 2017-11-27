@@ -1,7 +1,7 @@
 import numpy as np
 from collections import defaultdict
 
-def read_text(fname, N, max_lines=np.inf):
+def read_text(fname, N, BPTT, max_lines=np.inf):
     """
     Reads in the data in fname and returns it as
     one long list of words.
@@ -9,22 +9,36 @@ def read_text(fname, N, max_lines=np.inf):
     data = []
     i2w = dict()
     w2i = dict()
+    BPTT_count = 0
+    temp_sentence = []
+
+    for j in range(0,N-1):
+        temp_sentence.append('<s>')
 
     with open(fname, "r") as fh:
         for k, line in enumerate(fh):
+
             if k > max_lines:
                 break
+
             words = line.strip().split()
 
-            for sentence_start in range(N-1):
-                data.append('<s>')
-
             for word in words:
-                data.append(word.lower())
+                temp_sentence.append(word.lower())
+                BPTT_count += 1
 
-            data.append('</s>')
+                if BPTT_count > BPTT - 2:
+                    data.append(temp_sentence)
+                    temp_sentence = []
+                    BPTT_count = 0
 
-    vocab = set(data)
+                    for j in range(0,N - 1):
+                        temp_sentence.append('<s>')
+
+            temp_sentence.append('</s>')
+
+    data.append(temp_sentence)
+    vocab = set([item for sublist in data for item in sublist])
 
     for i, word in enumerate(vocab):
         w2i[word] = i
@@ -35,15 +49,17 @@ def read_text(fname, N, max_lines=np.inf):
 
     return data, w2i, i2w
 
-def get_sentence_list(data):
+def get_sentence_list(data,BPTT):
 
     sentence_list = []
     temp_sentence = []
+    BPTT_count = 0
     for i in data:
         temp_sentence.append(i)
-        if i == '</s>':
-            sentence_list.append(temp_sentence)
-            temp_sentence = []
+        BPTT_count += 1
+
+        sentence_list.append(temp_sentence)
+        temp_sentence = []
 
     return sentence_list
 
@@ -92,18 +108,34 @@ def read_and_create_dictionaries(fname, vector_file, max_lines=np.inf):
 
 def generate_context(N, word_list):
     if N == 2:
-        bigram = [([word_list[i]], word_list[i + 1]) for i in range(len(word_list) - 1)]
+        bigram = []
+        for l in word_list:
+            temp_bigram = [([l[i]], l[i + 1]) for i in range(len(l) - 1)]
+            for b in temp_bigram:
+                bigram.append(b)
         return bigram
     elif N == 3:
-        trigram = [([word_list[i], word_list[i + 1]], word_list[i + 2]) for i in range(len(word_list) - 2)]
+        trigram = []
+        for l in word_list:
+            temp_trigram = [([l[i], l[i + 1]], l[i + 2]) for i in range(len(l) - 2)]
+            for b in temp_trigram:
+                trigram.append(b)
         return trigram
     elif N == 4:
-        quadgram = [([word_list[i], word_list[i + 1], word_list[i + 2]], word_list[i + 3]) for i in
-                    range(len(word_list) - 3)]
+        quadgram = []
+        for l in word_list:
+            temp_quadgram = [([l[i], l[i + 1], l[i + 2]], l[i + 3]) for i in
+                    range(len(l) - 3)]
+            for b in temp_quadgram:
+                quadgram.append(b)
         return quadgram
     elif N == 5:
-        fivegram = [([word_list[i], word_list[i + 1], word_list[i + 2], word_list[i + 3]], word_list[i+4]) for i in
-                    range(len(word_list) - 4)]
+        fivegram = []
+        for l in word_list:
+            temp_fivegram = [([l[i], l[i + 1], l[i + 2], l[i + 3]], l[i+4]) for i in
+                    range(len(l) - 4)]
+            for b in temp_fivegram:
+                fivegram.append(b)
         return fivegram
     else:
         raise NotImplementedError('N should be 2, 3, 4 or 5')
