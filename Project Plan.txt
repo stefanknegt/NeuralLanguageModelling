@@ -1,16 +1,13 @@
-Milestone (23-nov)
--KenLM model af
--Bengio model af
--Plan betreffende RAN networks
-
-
-Mogelijke plannen voor RAN network:
-1) visualisatie: a) average distance of most important words, b) type of words which are important for predictions and c) when/what do we froget or memorize.
-2) improvements to RAN: a) RAN + other model in parallel or b) re-use word embedding matrix (weight tying - press&wolf, 2016) to connect RAN layer to output softmax.
-
-Onderzoeksvraag RAN:
-1) The RAN paper suggests that the non-linearity in the input and forget gates are not necessary for good performance in language modeling. Therefore the RAN prediction becomes a weighted sum over earlier seen word features. In the paper, the maximum dependency of the word prediction is shown, however there are much more factors which make up a prediction. It would be interesting to look at all the statistics involved in making predictions.
-
-2) The encoding layer maps a vocabulary sized one-hot-encoding into a feature vector and the decoding layer reverses this step. As [paper] suggests, the weights matrices of the encoding and decoding layer can be tied, which should increase the training speed. It would be interesting to look at difference in training time and loss over the epochs with and without weight tieing.
-
+-Bengio model af 
+-Plan betreffende RAN networks 
+ 
+ 
+Mogelijke plannen voor RAN network: 
+1) visualisatie: a) average distance of most important words, b) type of words which are important for predictions and c) when/what do we froget or memorize. 
+2) improvements to RAN: a) RAN + other model in parallel or b) re-use word embedding matrix (weight tying - press&wolf, 2016) to connect RAN layer to output softmax. 
+ 
+Onderzoeksvraag RAN: 
+1) The RAN paper suggests that the non-linearity in the input and forget gates are not necessary for good performance in language modeling. Therefore the RAN prediction becomes a weighted sum over earlier seen word features. In the paper, the maximum dependency of the word prediction is shown, however there are much more factors which make up a prediction. It would be interesting to look at all the statistics involved in making predictions. 
+ 
+2) The encoding layer maps a vocabulary sized one-hot-encoding into a feature vector and the decoding layer reverses this step. As [paper] suggests, the weights matrices of the encoding and decoding layer can be tied, which should increase the training speed. It would be interesting to look at difference in training time and loss over the epochs with and without weight tieing. 
  
