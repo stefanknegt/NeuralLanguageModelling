@@ -76,9 +76,9 @@ def calculate_perplexity(N, word_list, w2i, trained_model):
     print("Starting to calculate the perplexity now!")
     sentence_list = data_import.get_sentence_list(word_list)
 
-    test_set_prob = 0
+    test_set_prob = 0.0
     for sentence in sentence_list:
-        sentence_prob = 0
+        sentence_prob = 0.0
         for word in range(2, len(sentence)):
             context = [sentence[word - (N - 1) + i] for i in range(0, N - 1)]
             input_vector = [w2i[w] for w in context]
@@ -87,6 +87,7 @@ def calculate_perplexity(N, word_list, w2i, trained_model):
 
             required_index = w2i[sentence[word]]
             sentence_prob += output[0][required_index].data[0]
+            print ('sentence_prob is',sentence_prob)
 
         test_set_prob += np.log2(np.exp(sentence_prob))
 
