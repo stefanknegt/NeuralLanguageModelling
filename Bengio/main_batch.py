@@ -10,11 +10,11 @@ valid_file = "valid.txt"
 test_file = "test.txt"
 
 start_time = time.time()
-N = 5
+N = 3
 BPTT = 35
-batch_size = 15
+batch_size = 50
 word_list,w2i,i2w = data_import.read_text(train_file,N,BPTT)
-dim = 250
+dim = 50
 input_size = (N - 1) * dim
 hidden_size = 500
 num_classes = len(w2i)
@@ -36,6 +36,14 @@ torch.save(trained_model,name)
 #while sentence[-1] != '</s>':
 #    sentence = model.next_word(N,sentence,w2i,i2w,trained_model)
 #print (sentence)
+
+print ('training one epochlasted',time.time()-start_time)
+
+print ('We just trainend a',N,'gram')
+print ('This model trained',num_epochs,'epochs')
+print ('The batch size was',batch_size)
+print ('The embedding size was',dim)
+print ('There were',hidden_size,'hidden neurons')
 
 perplexity_train,_ = model.calculate_perplexity(N,word_list,w2i,trained_model)
 print ("The perplexity of the training set is",perplexity_train)
