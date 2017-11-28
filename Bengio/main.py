@@ -25,7 +25,7 @@ print ('Created ngrams!')
 
 mlp = model.Net(dim, input_size, hidden_size, num_classes)
 trained_model = model.train(N,num_epochs,ngram,w2i,mlp)
-
+torch.save(trained_model,'Bengio_50_50_4.pt')
 #start_sentence = [i2w[w2i['<s>']] for i in range(N-1)]
 #
 #sentence = model.next_word(N,start_sentence,w2i,i2w,trained_model)
@@ -46,4 +46,3 @@ print ('It took',time.time()-start_time,'seconds')
 #
 # perplexity_test,_ = model.calculate_perplexity(N,word_list_test,w2i,trained_model)
 # print ("The perplexity of the test set is",perplexity_test)
-

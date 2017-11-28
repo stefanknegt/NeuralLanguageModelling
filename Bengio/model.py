@@ -17,6 +17,7 @@ class Net(nn.Module):
 
     def forward(self, x):
         embeds = self.embeddings(x).view((1,-1))
+        print(embeds.size())
         out = F.relu(self.l1(embeds))
         out = self.l2(out)
         out = F.softmax(out)
