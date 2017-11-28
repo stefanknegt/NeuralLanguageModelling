@@ -48,7 +48,7 @@ print ('There were',hidden_size,'hidden neurons')
 perplexity_train,_ = model.calculate_perplexity(N,word_list,w2i,trained_model)
 print ("The perplexity of the training set is",perplexity_train)
 
-word_list_valid,_,_ = data_import.read_text(valid_file,N)
+word_list_valid,_,_ = data_import.read_text(valid_file,N,BPTT)
 perplexity_valid,_ = model.calculate_perplexity(N,word_list_valid,w2i,trained_model)
 print ("The perplexity of the validation set is",perplexity_valid)
 
