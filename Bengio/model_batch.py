@@ -63,7 +63,7 @@ def train(N,num_epochs,ngram,w2i,mlp,batch_size):
             total_loss += loss.data
 
             if b % 1000 == 0:
-                print ('in epoch',epoch,'it is now at batch',b/batch_size,' which is at ',(b*100)/len(ngram),'%')
+                print ('in epoch',epoch,'it is now at batch',b/batch_size,' which is at ',(b*100.)/float(len(ngram)),'%')
         print('After epoch', epoch, 'the total loss is', total_loss)
     return mlp
 
