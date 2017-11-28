@@ -10,7 +10,11 @@ valid_file = "valid.txt"
 test_file = "test.txt"
 
 start_time = time.time()
+<<<<<<< HEAD
 N = 4
+=======
+N = 3
+>>>>>>> 1bb61c0c94221f5974686c32f83060cb879c7fb7
 BPTT = 35
 batch_size = 50
 word_list,w2i,i2w = data_import.read_text(train_file,N,BPTT)
