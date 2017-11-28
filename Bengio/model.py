@@ -17,7 +17,7 @@ class Net(nn.Module):
 
     def forward(self, x):
         embeds = self.embeddings(x).view((1,-1))
-        print(embeds.size())
+        # print(embeds.size())
         out = F.relu(self.l1(embeds))
         out = self.l2(out)
         out = F.log_softmax(out)
@@ -101,10 +101,5 @@ def calculate_perplexity(N, word_list, w2i, trained_model):
         if word != '<s>' and word != '</s>':
             number_of_words += 1  # We do not count start and end symbols as words
 
-<<<<<<< HEAD
-    perplexity = np.exp ((-1.0 / float(number_of_words)) * test_set_prob )
+    perplexity = np.exp  ((-1.0 / float(number_of_words)) * test_set_prob )
     return perplexity, number_of_words
-=======
-    perplexity = 2.0 ** ((-1.0 / float(number_of_words)) * test_set_prob )
-    return perplexity, number_of_words
->>>>>>> 34712b89390e65e6b6af01a68868eca357276790

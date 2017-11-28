@@ -5,21 +5,21 @@ import torch
 from torch import autograd
 import time
 
-train_file = "test.txt"
+train_file = "train-test.txt"
 #valid_file = "valid.txt"
 #test_file = "test.txt"
 
 start_time = time.time()
 N = 4
 BPTT = 15
-batch_size = 50
+batch_size = 15
 word_list,w2i,i2w = data_import.read_text(train_file,N,BPTT)
 dim = 50
 input_size = (N - 1) * dim
 hidden_size = dim * 10
 num_classes = len(w2i)
 print ('There are',num_classes,'classes')
-num_epochs = 1
+num_epochs = 100
 
 ngram = data_import.generate_context(N, word_list) # Create ngrams
 print ('Created ngrams! There are',len(ngram))
