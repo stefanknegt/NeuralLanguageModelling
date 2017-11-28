@@ -5,6 +5,7 @@ import torch.nn.functional as F
 from torch import autograd
 import random
 import read_data as data_import
+from torch.utils.data import TensorDataset, DataLoader
 
 class Net(nn.Module):
     def __init__(self, dim, input_size,hidden_size, num_classes):
@@ -16,7 +17,8 @@ class Net(nn.Module):
         self.bias2 = nn.Parameter(torch.zeros(1))
 
     def forward(self, x):
-        embeds = self.embeddings(x).view((1,-1))
+        size = len(x)
+        embeds = self.embeddings(x).view((size,-1))
         out = F.relu(self.l1(embeds))
         out = self.l2(out)
         out = F.softmax(out)
@@ -40,6 +42,7 @@ def train(N,num_epochs,ngram,w2i,mlp,batch_size):
         counter += 1
 
     print("Wooo finished")
+    #torch_dataset = TensorDataset()
     for epoch in range(num_epochs):
         random.shuffle(ngram)
         total_loss = torch.Tensor([0])
@@ -52,7 +55,6 @@ def train(N,num_epochs,ngram,w2i,mlp,batch_size):
             input_batch = autograd.Variable(torch.from_numpy(input_batch).long())
             target_batch = autograd.Variable(torch.from_numpy(target_batch).long())
 
-            print (input_batch)
             mlp.zero_grad()
             output = mlp(input_batch)
             loss = criterion(output, target_batch)
@@ -86,12 +88,10 @@ def calculate_perplexity(N, word_list, w2i, trained_model):
         for word in range(N-1, len(sentence)):
             context = [sentence[word - (N - 1) + i] for i in range(0, N - 1)]
             input_vector = [w2i[w] for w in context]
-            input_vector = autograd.Variable(torch.LongTensor(input_vector))
+            input_vector = autograd.Variable(torch.LongTensor(input_vector)).view((1,len(input_vector)))
             output = trained_model(input_vector)
-
             required_index = w2i[sentence[word]]
             sentence_prob += np.log(output[0][required_index].data[0])
-
             #print ('sentence_prob is',sentence_prob)
         test_set_prob += np.log2(np.exp(sentence_prob))
 
