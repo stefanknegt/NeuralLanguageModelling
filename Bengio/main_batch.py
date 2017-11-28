@@ -41,8 +41,8 @@ print ('training one epochlasted',time.time()-start_time)
 
 print ('We just trainend a',N,'gram')
 print ('This model trained',num_epochs,'epochs')
-print ('The batch size was',batch_size)
 print ('The embedding size was',dim)
+print ('The batch size was',batch_size)
 print ('There were',hidden_size,'hidden neurons')
 
 perplexity_train,_ = model.calculate_perplexity(N,word_list,w2i,trained_model)
