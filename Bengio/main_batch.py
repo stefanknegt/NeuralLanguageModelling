@@ -13,7 +13,7 @@ start_time = time.time()
 
 N = 3
 BPTT = 35
-batch_size = 50
+batch_size = 100
 word_list,w2i,i2w = data_import.read_text(train_file,N,BPTT)
 dim = 50
 input_size = (N - 1) * dim
