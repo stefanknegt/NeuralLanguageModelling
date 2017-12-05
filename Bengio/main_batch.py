@@ -53,7 +53,7 @@ word_list_valid,_,_ = data_import.read_text(valid_file,N,BPTT)
 perplexity_valid,_ = model.calculate_perplexity(N,word_list_valid,w2i,trained_model)
 print ("The perplexity of the validation set is",perplexity_valid)
 
-word_list_test,w2i,i2w = data_import.read_text(test_file,N,BPTT)
+word_list_test,_,_ = data_import.read_text(test_file,N,BPTT)
 perplexity_test,_ = model.calculate_perplexity(N,word_list_test,w2i,trained_model)
 print("The perplexity of the test set is",perplexity_test)
 
