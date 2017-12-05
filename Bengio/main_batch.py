@@ -15,12 +15,12 @@ N = 3
 BPTT = 35
 batch_size = 100
 word_list,w2i,i2w = data_import.read_text(train_file,N,BPTT)
-dim = 50
+dim = 100
 input_size = (N - 1) * dim
 hidden_size = 500
 num_classes = len(w2i)
 print ('There are',num_classes,'classes')
-num_epochs = 20
+num_epochs = 50
 
 ngram = data_import.generate_context(N, word_list) # Create ngrams
 print ('Created ngrams! There are',len(ngram))
