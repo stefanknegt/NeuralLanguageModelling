@@ -54,6 +54,6 @@ def RANCell(input, hidden, weights, biases):
     f_t = F.sigmoid(F.linear(hidden, w_fc, b_fc) + F.linear(input, w_fx, b_fx))
     c_t = i_t * ctilde_t + f_t * hidden
     h_t = F.tanh(c_t)
-    #settings.fList.append(f_t)
-    #settings.iList.append(i_t)
+    settings.fList.append(f_t)
+    settings.iList.append(i_t)
     return h_t
