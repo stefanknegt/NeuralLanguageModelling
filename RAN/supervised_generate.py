@@ -64,10 +64,10 @@ if args.cuda:
 with open('data/penn/test.txt') as f:
     sentences = f.readlines()
 sentences = [x.strip() for x in sentences]
-for sentence in sentences:
-    #sentence = "mrs. hills said many of the N countries that she placed on the <unk> are great"
+results = {}
+for sentence in sentences[:50]: # NOW ONLY FOR 50 SENTENCES
     sentence_list = sentence.split(' ')
-    print(sentence_list)
+    #print(sentence_list)
     idx_list = [corpus.dictionary.word2idx[s] for s in sentence_list]
 
     settings.init()
@@ -103,5 +103,20 @@ for sentence in sentences:
         max_dependency = np.argmax(word_list, axis=0)
         distance =  np.arange(0,num_words) - max_dependency
         word_dependency = [sentence_list[i] for i in max_dependency]
+    results[sentence] = distance
+    #print(results)
+averages = {}
+for key in results:
+    avg_dependency = sum(results[key])/len(results[key])
+    averages[key]=avg_dependency
 
-    print(sentence_list, idx_list, word_dependency, max_dependency, distance)
+max_distance = 1
+max_sentence = ""
+
+for key in averages:
+    print(averages[key])
+    if averages[key] > max_distance:
+        max_distance = averages[key]
+        max_sentence = key
+
+print(max_distance,results[max_sentence],max_sentence)
