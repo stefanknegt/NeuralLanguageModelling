@@ -13,6 +13,8 @@ import settings
 import data
 import numpy as np
 import matplotlib.pyplot as plt
+from collections import Counter
+
 parser = argparse.ArgumentParser(description='PyTorch PTB Language Model')
 
 # Model parameters.
@@ -65,7 +67,10 @@ with open('data/penn/test.txt') as f:
     sentences = f.readlines()
 sentences = [x.strip() for x in sentences]
 results = {}
-for sentence in sentences[:50]: # NOW ONLY FOR 50 SENTENCES
+results_second = {}
+word_dependency = []
+second_word_dependency = []
+for sentence in sentences[:2]: # NOW ONLY FOR 50 SENTENCES
     sentence_list = sentence.split(' ')
     #print(sentence_list)
     idx_list = [corpus.dictionary.word2idx[s] for s in sentence_list]
@@ -81,42 +86,71 @@ for sentence in sentences[:50]: # NOW ONLY FOR 50 SENTENCES
             word_idx = idx_list[i+1]
             input.data.fill_(word_idx)
 
-        assert(len(settings.iList) == len(settings.fList))
-        word_list = np.zeros((len(settings.iList),len(settings.iList)))
-        num_words = len(settings.iList)
-        for word in range(0,num_words):
-            for depth in range(0,num_words):
-                if (word>depth):
-                    forget = settings.fList[depth+1]
-                    for k in range(depth+2,word+1):
-                        forget = forget*settings.fList[k]
-                    answer = (torch.mm(settings.iList[depth],forget.transpose(0,1)))
-                    answer = answer.data.numpy()
-                    word_list[depth][word] = answer
-        mean_distance = np.zeros(num_words)
-        for i in range(1,num_words):
-            average_index = 0
-            for j in range(0,num_words):
-                average_index += word_list[j][i] * j
-            mean_distance[i] = i - average_index / np.sum(word_list[:,i])
+    assert(len(settings.iList) == len(settings.fList))
+    word_list = np.zeros((len(settings.iList),len(settings.iList)))
+    num_words = len(settings.iList)
+    for word in range(0,num_words):
+        for depth in range(0,num_words):
+            if (word>depth):
+                forget = settings.fList[depth+1]
+                for k in range(depth+2,word+1):
+                    forget = forget*settings.fList[k]
+                answer = (torch.mm(settings.iList[depth],forget.transpose(0,1)))
+                answer = answer.data.numpy()
+                word_list[depth][word] = answer
+    mean_distance = np.zeros(num_words)
+    for i in range(1,num_words):
+        average_index = 0
+        for j in range(0,num_words):
+            average_index += word_list[j][i] * j
+        mean_distance[i] = i - average_index / np.sum(word_list[:,i])
 
-        max_dependency = np.argmax(word_list, axis=0)
-        distance =  np.arange(0,num_words) - max_dependency
-        word_dependency = [sentence_list[i] for i in max_dependency]
+    max_dependency = np.argmax(word_list, axis=0)
+    word_list_second = word_list
+    for i in range(len(max_dependency)):
+        word_list_second[max_dependency[i],i] = 0
+    second_dependency = np.argmax(word_list_second, axis=0)
+    distance =  np.arange(0,num_words) - max_dependency
+    second_distance = np.arange(0,num_words) - second_dependency
+    word_dependency += [sentence_list[i] for i in max_dependency]
+    second_word_dependency += [sentence_list[i] for i in second_dependency]
     results[sentence] = distance
-    #print(results)
+    results_second[sentence] = second_distance
+
 averages = {}
 for key in results:
     avg_dependency = sum(results[key])/len(results[key])
     averages[key]=avg_dependency
+maximums = {}
+for key in results:
+    max_dependency = max(results[key])
+    maximums[key]=max_dependency
 
 max_distance = 1
 max_sentence = ""
-
-for key in averages:
-    #print(averages[key])
-    if averages[key] > max_distance:
-        max_distance = averages[key]
+for key in maximums:
+    if maximums[key] > max_distance:
+        max_distance = maximums[key]
         max_sentence = key
-
 print(max_distance,results[max_sentence],max_sentence)
+
+top_5 = sorted(averages, key=averages.get, reverse=True)[:5]
+results_top_5 = [results[i] for i in top_5]
+second_top_5 = [results_second[i] for i in top_5]
+print(top_5, results_top_5)
+
+most_common_dependencies = Counter(word_dependency).most_common(20)
+items = []
+values = []
+for i in most_common_dependencies:
+    items.append(i[0])
+    values.append(i[1])
+
+indexes = np.arange(len(items))
+width = 1
+
+plt.bar(indexes, values, width)
+plt.xticks(indexes, items)
+plt.xlabel('20 words which were most dependent for prediction')
+plt.ylabel('Occurences')
+plt.show()
