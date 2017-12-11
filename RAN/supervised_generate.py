@@ -114,7 +114,7 @@ max_distance = 1
 max_sentence = ""
 
 for key in averages:
-    print(averages[key])
+    #print(averages[key])
     if averages[key] > max_distance:
         max_distance = averages[key]
         max_sentence = key
