@@ -13,7 +13,9 @@ import settings
 import data
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib import cm as CM
 from collections import Counter
+
 
 parser = argparse.ArgumentParser(description='PyTorch PTB Language Model')
 
@@ -70,7 +72,7 @@ results = {}
 results_second = {}
 word_dependency = []
 second_word_dependency = []
-for sentence in sentences[:2]: # NOW ONLY FOR 50 SENTENCES
+for sentence in sentences:
     sentence_list = sentence.split(' ')
     #print(sentence_list)
     idx_list = [corpus.dictionary.word2idx[s] for s in sentence_list]
@@ -97,8 +99,11 @@ for sentence in sentences[:2]: # NOW ONLY FOR 50 SENTENCES
                     forget = forget*settings.fList[k]
                 answer = (torch.mm(settings.iList[depth],forget.transpose(0,1)))
                 answer = answer.data.numpy()
+                #print(depth,word,answer)
                 word_list[depth][word] = answer
     mean_distance = np.zeros(num_words)
+    #print(word_list)
+
     for i in range(1,num_words):
         average_index = 0
         for j in range(0,num_words):
@@ -106,7 +111,7 @@ for sentence in sentences[:2]: # NOW ONLY FOR 50 SENTENCES
         mean_distance[i] = i - average_index / np.sum(word_list[:,i])
 
     max_dependency = np.argmax(word_list, axis=0)
-    word_list_second = word_list
+    word_list_second = np.array(word_list)
     for i in range(len(max_dependency)):
         word_list_second[max_dependency[i],i] = 0
     second_dependency = np.argmax(word_list_second, axis=0)
@@ -116,7 +121,19 @@ for sentence in sentences[:2]: # NOW ONLY FOR 50 SENTENCES
     second_word_dependency += [sentence_list[i] for i in second_dependency]
     results[sentence] = distance
     results_second[sentence] = second_distance
-
+    """
+    if num_words == 10:
+        plt.imshow(word_list, cmap=CM.Blues, interpolation='nearest')
+        x = np.array([0,1,2,3,4,5,6,7,8,9])
+        my_xticks = [sentence_list[0], sentence_list[1], sentence_list[2], sentence_list[3],sentence_list[4],sentence_list[5],sentence_list[6],sentence_list[7],sentence_list[8],sentence_list[9]]
+        plt.xticks(x, my_xticks)
+        plt.yticks(x, my_xticks)
+        plt.tight_layout()
+        plt.title("Weight dependency heatmap")
+        plt.xticks(rotation=30)
+        plt.tight_layout()
+        plt.show()
+    """
 averages = {}
 for key in results:
     avg_dependency = sum(results[key])/len(results[key])
