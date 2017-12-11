@@ -72,8 +72,13 @@ results = {}
 results_second = {}
 word_dependency = []
 second_word_dependency = []
+distances = []
+all_words = []
+print('There are ',len(sentences),' sentences...')
+counter = 0
 for sentence in sentences:
     sentence_list = sentence.split(' ')
+    all_words += sentence_list
     #print(sentence_list)
     idx_list = [corpus.dictionary.word2idx[s] for s in sentence_list]
 
@@ -116,11 +121,15 @@ for sentence in sentences:
         word_list_second[max_dependency[i],i] = 0
     second_dependency = np.argmax(word_list_second, axis=0)
     distance =  np.arange(0,num_words) - max_dependency
+    distances += distance.tolist()
     second_distance = np.arange(0,num_words) - second_dependency
     word_dependency += [sentence_list[i] for i in max_dependency]
     second_word_dependency += [sentence_list[i] for i in second_dependency]
     results[sentence] = distance
     results_second[sentence] = second_distance
+    counter += 1
+    if counter % 100 == 0:
+        print('We are at sentence ',counter)
     """
     if num_words == 10:
         plt.imshow(word_list, cmap=CM.Blues, interpolation='nearest')
@@ -134,6 +143,30 @@ for sentence in sentences:
         plt.tight_layout()
         plt.show()
     """
+
+common_relative_dependency = Counter(word_dependency)
+for key in common_relative_dependency:
+    if all_words.count(key) > 10:
+        common_relative_dependency[key] /= all_words.count(key)
+    else:
+        common_relative_dependency[key] = 0
+most_common_relative = common_relative_dependency.most_common(10)
+items = []
+values = []
+for i in most_common_relative:
+    items.append(i[0])
+    values.append(i[1])
+
+indexes = np.arange(len(items))
+width = 1
+plt.bar(indexes, values, width)
+plt.xticks(indexes, items)
+plt.xlabel('10 words which are relatively most often max dependent')
+plt.ylabel('Relative occurences')
+plt.xticks(rotation=30)
+plt.ylim([2,3])
+plt.show()
+
 averages = {}
 for key in results:
     avg_dependency = sum(results[key])/len(results[key])
@@ -143,20 +176,22 @@ for key in results:
     max_dependency = max(results[key])
     maximums[key]=max_dependency
 
-max_distance = 1
-max_sentence = ""
-for key in maximums:
-    if maximums[key] > max_distance:
-        max_distance = maximums[key]
-        max_sentence = key
-print(max_distance,results[max_sentence],max_sentence)
-
-top_5 = sorted(averages, key=averages.get, reverse=True)[:5]
+#top_5 = sorted(maximums, key=maximums.get, reverse=True)[:5]
+#results_top_5 = [results[i] for i in top_5]
+#second_top_5 = [results_second[i] for i in top_5]
+#print(top_5)
+#print(results_top_5)
+#print(second_top_5)
+print('Here are the 100 sentences with max average dependency')
+top_5 = sorted(averages, key=averages.get, reverse=True)[:300]
 results_top_5 = [results[i] for i in top_5]
 second_top_5 = [results_second[i] for i in top_5]
-print(top_5, results_top_5)
+for i in range(len(top_5)):
+    word_list = top_5[i].split(' ')
+    if word_list.count('<unk>')==0 and word_list.count('N')==0:
+        print(top_5[i], results_top_5[i], second_top_5[i])
 
-most_common_dependencies = Counter(word_dependency).most_common(20)
+most_common_dependencies = Counter(word_dependency).most_common(10)
 items = []
 values = []
 for i in most_common_dependencies:
@@ -168,6 +203,26 @@ width = 1
 
 plt.bar(indexes, values, width)
 plt.xticks(indexes, items)
-plt.xlabel('20 words which were most dependent for prediction')
+plt.xlabel('10 words which were most dependent for prediction')
+plt.ylabel('Occurences')
+plt.xticks(rotation=30)
+plt.ylim([400,1300])
+plt.show()
+
+x_axis = np.arange(max(distances)+1)
+y_axis = np.zeros(len(x_axis))
+for x in x_axis:
+    y_axis[x] = distances.count(x)
+plt.bar(x_axis, y_axis)
+plt.xlabel('Distance of maximum dependent word')
+plt.ylabel('Occurences')
+plt.show()
+
+x_axis = np.arange(5)
+y_axis = np.zeros(len(x_axis))
+for x in x_axis:
+    y_axis[x] = distances.count(x)
+plt.bar(x_axis, y_axis)
+plt.xlabel('Distance of maximum dependent word (<5)')
 plt.ylabel('Occurences')
 plt.show()

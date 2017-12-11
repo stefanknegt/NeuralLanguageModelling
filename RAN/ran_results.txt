@@ -1,0 +1,48 @@
+Sentences: 3761
+
+Max max max_dependency
+'richard <unk> <unk> as a <unk> <unk> <unk> in a <unk> <unk> and rolling up its long <unk>'
+'<unk> <unk> looks like a young <unk> <unk> <unk> william armstrong who plays max could pass for <unk> <unk> and douglas <unk> <unk> for james <unk> <unk> <unk> is a <unk> <unk> <unk> and <unk> <unk> could easily double for <unk> hall the <unk> <unk> of the <unk> boys <unk>'
+'<unk> d. <unk> of <unk> & <unk> then of <unk> <unk> <unk> <unk> <unk> <unk> <unk> & <unk> was the lead trial lawyer and his new firm pursued the application appeal'
+'N N N to N N N one month N N N to N N N two months N N N to N N N three months N N N to N N N four months N N N to N N N five months N N N to N N N six months',
+'they are still an important source of news for N million <unk> in N exotic <unk> from <unk> and <unk> to <unk> and <unk>']
+
+Max dependency
+[0,  1,  2,  3,  1,  2,  3,  4,  5,  1,  1,  2, 12,  1,  1,  1,  1, 1]
+[0,  1,  1,  1,  1,  2,  1,  2,  3,  4,  1,  1,  1,  1,  1,  1,  1, 2,  3,  4,  1,  1,  2,  3,  1,  1,  2,  3,  4,  1,  2,  3,  4,  5, 1,  2, 12,  1,  1,  1,  2,  3,  1,  2,  3,  4,  5,  6,  7,  1]
+[0, 1, 1, 2, 3, 4, 1, 2, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1]
+[0, 1, 1, 1, 1, 2, 3, 1, 1, 1, 2, 3, 4, 1, 6, 7, 8, 1, 1, 2, 3, 4, 1, 6, 7, 8, 1, 1, 2, 3, 4, 1, 6, 7, 8, 1, 1, 2, 3, 4, 1, 6, 7, 8, 1, 1, 2, 3, 4, 1, 6, 7, 8, 1]
+[0, 1, 1, 1, 1, 1, 1, 2, 1, 2, 3, 1, 2, 1, 4, 1, 2, 1, 2, 3, 6, 1, 8, 1]
+
+Second max
+[0,  1,  1,  1,  4,  1,  6,  7,  8,  6,  2,  1,  9, 13,  2,  2,  2, 2]
+[0,  1,  2,  2,  2,  3,  3,  4,  6,  7,  5,  2,  2,  2,  2,  2,  2, 1,  2,  3,  5,  6,  7,  8,  4,  2,  6,  7,  8,  5,  1,  2,  8,  9, 10, 11,  1, 13,  2,  2,  1,  2,  4,  1,  6,  7,  1,  1,  1,  8]
+[0,  1,  2,  1,  1,  2,  5,  6,  3,  1,  5,  6,  7,  8, 13, 14,  1, 10,  1,  3,  1,  3,  2,  2,  1,  3,  2,  3,  2,  3,  3]
+[0, 1, 2, 2, 2, 1, 1, 4, 2, 2, 3, 4, 5, 5, 2, 3, 9, 9, 2, 3, 4, 5, 5, 7, 8, 9, 9, 2, 3, 4, 5, 5, 7, 8, 9, 9, 2, 3, 4, 5, 5, 7, 8, 9, 9, 2, 3, 4, 5, 5, 7, 8, 9, 9]
+[0, 1, 2, 2, 2, 2, 2, 3, 3, 1, 2, 4, 5, 3, 7, 5, 6, 3, 4, 1, 4, 7, 6, 9]
+
+Max average dependency
+'N N N to N N N one month N N N to N N N two months N N N to N N N three months N N N to N N N four months N N N to N N N five months N N N to N N N six months'
+'among other otc issues intel dropped N N to N N <unk> transportation lost N N to N N the american depositary receipts of jaguar were off N to N N mci communications slipped N N to N N apple computer fell N to N N and <unk> dropped N N to N N'
+'N N N to N days N N N to N days N N N to N days N N N to N days N N N to N days N N N to N days N N N to N days N N N to N days'
+'<unk> d. <unk> of <unk> & <unk> then of <unk> <unk> <unk> <unk> <unk> <unk> <unk> & <unk> was the lead trial lawyer and his new firm pursued the application appeal'
+'<unk> <unk> looks like a young <unk> <unk> <unk> william armstrong who plays max could pass for <unk> <unk> and douglas <unk> <unk> for james <unk> <unk> <unk> is a <unk> <unk> <unk> and <unk> <unk> could easily double for <unk> hall the <unk> <unk> of the <unk> boys <unk>']
+
+Max dependency
+[0, 1, 1, 1, 1, 2, 3, 1, 1, 1, 2, 3, 4, 1, 6, 7, 8, 1, 1, 2, 3, 4, 1, 6, 7, 8, 1, 1, 2, 3, 4, 1, 6, 7, 8, 1, 1, 2, 3, 4, 1, 6, 7, 8, 1, 1, 2, 3, 4, 1, 6, 7, 8, 1]
+[0, 1, 1, 1, 1, 1, 1, 2, 3, 1, 5, 6, 7, 1, 1, 2, 3, 4, 5, 6, 7, 1, 1, 1, 2, 1, 1, 1, 2, 3, 4, 5, 1, 1, 1, 2, 3, 4, 5, 6, 1, 1, 1, 2, 3, 4, 5, 1, 7, 1, 2, 3, 4, 5]
+[0, 1, 1, 1, 1, 2, 1, 2, 3, 4, 1, 6, 1, 2, 3, 4, 1, 6, 1, 2, 3, 4, 1, 6, 1, 2, 3, 4, 1, 6, 1, 2, 3, 4, 1, 6, 1, 2, 3, 4, 1, 6, 1, 2, 3, 4, 1, 6]
+[0, 1, 1, 2, 3, 4, 1, 2, 1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1]
+[0,  1,  1,  1,  1,  2,  1,  2,  3,  4,  1,  1,  1,  1,  1,  1,  1, 2,  3,  4,  1,  1,  2,  3,  1,  1,  2,  3,  4,  1,  2,  3,  4,  5, 1,  2, 12,  1,  1,  1,  2,  3,  1,  2,  3,  4,  5,  6,  7,  1]
+
+Second max
+[0, 1, 2, 2, 2, 1, 1, 4, 2, 2, 3, 4, 5, 5, 2, 3, 9, 9, 2, 3, 4, 5, 5, 7, 8, 9, 9, 2, 3, 4, 5, 5, 7, 8, 9, 9, 2, 3, 4, 5, 5, 7, 8, 9, 9, 2, 3, 4, 5, 5, 7, 8, 9, 9]
+[0,  1,  2,  2,  2,  2,  2,  3,  4,  4,  2,  7,  8,  8,  2,  3,  4, 1,  6,  7,  1,  8,  2,  2,  3,  3,  2,  2,  3,  1,  5,  6,  6,  2, 2,  3,  4,  1,  6,  7,  7,  2,  2,  3,  1,  5,  6,  6,  2,  8,  9, 10,  1,  2]
+[0,  1,  2,  2,  2,  1,  3,  1,  1,  1,  5,  2,  7,  8,  9,  1,  5, 2,  7,  8,  9, 10,  5,  2,  7,  8,  9, 10,  5,  2,  7,  8,  9, 10, 5,  2,  7,  8,  9, 10,  5,  2,  7,  8,  9, 10,  5,  2]
+[0,  1,  2,  1,  1,  2,  5,  6,  3,  1,  5,  6,  7,  8, 13, 14,  1, 10,  1,  3,  1,  3,  2,  2,  1,  3,  2,  3,  2,  3,  3]
+[0,  1,  2,  2,  2,  3,  3,  4,  6,  7,  5,  2,  2,  2,  2,  2,  2, 1,  2,  3,  5,  6,  7,  8,  4,  2,  6,  7,  8,  5,  1,  2,  8,  9, 10, 11,  1, 13,  2,  2,  1,  2,  4,  1,  6,  7,  1,  1,  1,  8])]
+
+
+buyers stepped in to the futures pit [0 1 1 2 3 4 1] [0 1 2 3 1 1 5]
+instead they got a discussion of the need for the u.s. and japan to work together and of the importance of the long-term view [0 1 1 1 2 1 2 3 1 2 3 1 2 1 2 1 1 2 3 4 1 2 3 1] [0 1 2 2 1 3 4 5 4 1 2 4 5 3 4 3 2 3 4 5 5 6 1 4]
+there 's a program for women and a science show [0 1 2 3 1 2 1 2 3 1] [0 1 1 1 4 1 3 1 1 4]
